@@ -1,0 +1,71 @@
+
+
+
+
+
+#code for the maze challenge
+from robotFunctions import *
+DEMO=False
+exampleCode='''NextHeading = robot.compass.Heading()
+
+def close():
+	if robot.ultraFrontRight.distance()<50:
+		return True
+	else:
+		return False
+
+while True:
+	NextHeading = (NextHeading + 90) %360
+	robot.stayMid(close,45,rightSide=False,maxSpeed=1)
+	robot.stop()
+	time.sleep(0.1)
+	robot.TurnDegreesOp3(234567890,NextHeading)'''
+def run():
+	speed=0.9
+	if DEMO:
+		exec(exampleCode)
+	else:
+		def close(dist=55):
+			#distRead = robot.ultraFrontRight.distance()
+			#print(distRead)
+			return False #distRead<dist # FIX when breadboard is finnished
+		#FuncToStayMid = robot.stayMid2
+		FuncToStayMid = robot.mazeSection
+		FuncToStayMid = robot.stayMid2
+		absHeading=robot.compass.Heading()
+		time.sleep(1)
+		absHeading=robot.compass.Heading()
+		heading=-90
+		print("First stay mid")
+		FuncToStayMid(close,20,rightSide=True,maxSpeed=speed,targetHeading=absHeading)
+		print("First Turn")
+		robot.stayDeg("turned",heading,absolute=False,maxSpeed=speed,params=[])
+		print("Second Stay Mid")
+		FuncToStayMid(close,20,rightSide=True,maxSpeed=speed,targetHeading=absHeading-90)
+		print("Second Turn")
+		robot.stayDeg(close,heading,absolute=False,maxSpeed=speed,params=[])
+		heading=90
+		print("Third turn")
+		robot.stayDeg("turned",heading,absolute=False,maxSpeed=speed)
+		print("Third Stay Mid")
+		FuncToStayMid(close,20,rightSide=False,maxSpeed=speed,targetHeading=absHeading-90)
+		print("4th start deg")
+		robot.stayDeg(close,heading,absolute=False,maxSpeed=speed)
+		heading=-90
+		print("5th stayDeg")
+		robot.stayDeg("turned",heading,absolute=False,maxSpeed=speed)
+		print("4th stay mid")
+		FuncToStayMid(close,20,rightSide=True,maxSpeed=speed,targetHeading=absHeading-90)
+		print("6th stayDeg")
+		robot.stayDeg(close,heading,absolute=False,maxSpeed=speed)
+		print("5th staymid")
+		FuncToStayMid(close,20,rightSide=True,maxSpeed=speed,targetHeading=absHeading-180)
+		print("7th stayDeg")
+		robot.stayDeg("turned",heading,absolute=False,maxSpeed=speed)
+		print("6th staymid")
+		FuncToStayMid(close,20,rightSide=True,maxSpeed=speed,targetHeading=absHeading+90)
+		heading=90
+		#robot.stayDeg("turned",heading,absolute=False,maxSpeed=speed)
+
+if __name__ == "__main__":
+	run()
